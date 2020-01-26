@@ -5,13 +5,16 @@ namespace JsonComparer.Core.Helpers
 {
     public static class ConsoleHelpers
     {
-        public static void PrintObject(object obj)
+        public static void PrintObject(object obj, bool shouldFormatJson = false)
         {
-            Console.WriteLine(JsonConvert.SerializeObject(obj, new JsonSerializerSettings
+            var settings = new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                Formatting = Formatting.Indented
-            }));
+                NullValueHandling = NullValueHandling.Ignore
+            };
+            if (shouldFormatJson)
+                settings.Formatting = Formatting.Indented;
+
+            Console.WriteLine(JsonConvert.SerializeObject(obj, settings));
         }
     }
 }
