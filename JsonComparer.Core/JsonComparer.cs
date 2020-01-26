@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using JsonComparer.Core.Helpers;
@@ -21,12 +20,12 @@ namespace JsonComparer.Core
             };
         }
 
-        public ComparePrimaryKeysObjects IntersectPrimaryKeys(CompareJsonObjects compareObjects)
+        public ComparePkDto IntersectPrimaryKeys(CompareJsonObjects compareObjects)
         {
             var jsonA = compareObjects.JsonA;
             var jsonB = compareObjects.JsonB;
 
-            var compPk = new ComparePrimaryKeysObjects();
+            var compPk = new ComparePkDto();
             foreach (var a in jsonA)
             {
                 if (!jsonB.ContainsKey(a.Key))
@@ -42,27 +41,34 @@ namespace JsonComparer.Core
             return compPk;
         }
 
-        public Dictionary<PrimaryKeyDto, ValueDto> IntersectChangedValues(CompareJsonObjects compareObjects) {
+        public IEnumerable<JsonObjectDto> IntersectChangedValues(CompareJsonObjects compareObjects)
+        {
             var jsonA = compareObjects.JsonA;
             var jsonB = compareObjects.JsonB;
-            var inAAndBButValIsDiff = new Dictionary<PrimaryKeyDto, ValueDto>();
+            var changedValues = new Dictionary<JsonPkDto, JsonValueDto>();
             foreach (var a in jsonA)
             {
                 //if have same keys and different values
                 if (jsonB.ContainsKey(a.Key) && !a.Value.Equals(jsonB[a.Key]))
                 {
                     var mergedValue = a.Value.Merge(jsonB[a.Key]);
-                    if(mergedValue.HasValue())
-                        inAAndBButValIsDiff.Add(a.Key, mergedValue);
+                    if (mergedValue.HasValue())
+                        changedValues.Add(a.Key, mergedValue);
                 }
             }
-            return inAAndBButValIsDiff;
+            var jsonObjects = changedValues.Select(c => new JsonObjectDto
+            {
+                PrimaryKey = c.Key,
+                Values = c.Value
+            });
+
+            return jsonObjects;
         }
 
 
-        private Dictionary<PrimaryKeyDto, ValueDto> DeserializeFile(string fileName, JsonSerializer serializer)
+        private Dictionary<JsonPkDto, JsonValueDto> DeserializeFile(string fileName, JsonSerializer serializer)
         {
-            Dictionary<PrimaryKeyDto, ValueDto> jsonDict;
+            Dictionary<JsonPkDto, JsonValueDto> jsonDict;
             using (StreamReader file = File.OpenText(fileName))
             {
                 using (JsonReader reader = new JsonTextReader(file))
@@ -74,6 +80,5 @@ namespace JsonComparer.Core
             }
             return jsonDict;
         }
-
     }
 }
