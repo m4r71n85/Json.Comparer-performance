@@ -9,7 +9,8 @@ namespace JsonComparer.Core.Helpers
         {
             Console.WriteLine(JsonConvert.SerializeObject(obj, new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
+                Formatting = Formatting.Indented
             }));
         }
     }
