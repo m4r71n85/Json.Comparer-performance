@@ -22,7 +22,7 @@ namespace JsonComparer.Core
         /// </summary>
         /// <param name="compareObjects">Object containing two json objects to be compared</param>
         /// <returns>Two list of PrimaryKey objects containing filtered result</returns>
-        ComparePrimaryKeysObjects IntersectPrimaryKeys(CompareJsonObjects compareObjects);
+        ComparePkDto IntersectPrimaryKeys(CompareJsonObjects compareObjects);
 
         /// <summary>
         /// Makes intersection between two JsonObjects
@@ -30,7 +30,7 @@ namespace JsonComparer.Core
         /// </summary>
         /// <param name="jsonA">One of the json objects to be compared</param>
         /// <param name="jsonB">The other json objects to be compared</param>
-        Dictionary<PrimaryKeyDto, ValueDto> IntersectChangedValues(CompareJsonObjects compareObjects);
+        IEnumerable<JsonObjectDto> IntersectChangedValues(CompareJsonObjects compareObjects);
 
     }
 }
