@@ -1,15 +1,14 @@
-﻿using JsonComparer.Models;
-using System;
+﻿using System;
 
-namespace JsonComparer.Core.Models
+namespace JsonComparer.Models
 {
-    internal class ParseDataDto : IEquatable<ParseDataDto>
+    public class JsonObjectDto : IEquatable<JsonObjectDto>
     {
         public JsonPkDto PrimaryKey { get; set; }
         public JsonValueDto Values { get; set; }
         
 
-        public bool Equals(ParseDataDto other)
+        public bool Equals(JsonObjectDto other)
         {
             return PrimaryKey.Equals(other.PrimaryKey)
                         && Values.Equals(other.Values);

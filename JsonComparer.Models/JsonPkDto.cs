@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace JsonComparer.Models
 {
-    public class PrimaryKeyDto : IEquatable<PrimaryKeyDto>
+    public class JsonPkDto : IEquatable<JsonPkDto>
     {
         public string Tourist { get; set; }
         public string Zeile { get; set; }
@@ -17,8 +18,7 @@ namespace JsonComparer.Models
         public string TransactionHistoryID { get; set; }
 
 
-
-        public bool Equals(PrimaryKeyDto other)
+        public bool Equals(JsonPkDto other)
         {
             return (Tourist == other.Tourist
                     && Zeile == other.Zeile
@@ -33,7 +33,8 @@ namespace JsonComparer.Models
                     && TransactionHistoryID == other.TransactionHistoryID);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return (string.IsNullOrWhiteSpace(Tourist) ? 0 : Tourist.GetHashCode())
                 ^ (string.IsNullOrWhiteSpace(Zeile) ? 0 : Zeile.GetHashCode())
                 ^ (string.IsNullOrWhiteSpace(Bund) ? 0 : Bund.GetHashCode())
@@ -45,6 +46,20 @@ namespace JsonComparer.Models
                 ^ (string.IsNullOrWhiteSpace(Attempt) ? 0 : Attempt.GetHashCode())
                 ^ (string.IsNullOrWhiteSpace(TransactionID) ? 0 : TransactionID.GetHashCode())
                 ^ (string.IsNullOrWhiteSpace(TransactionHistoryID) ? 0 : TransactionHistoryID.GetHashCode());
+        }
+
+        //Json.NET doesn't serialize Dictionaries with complex keys
+        //https://stackoverflow.com/questions/24504245/not-ableto-serialize-dictionary-with-complex-key-using-json-net/56351540
+        //workarounds are overriding ToString of key object or implementing a TypeConverter
+        //https://www.newtonsoft.com/json/help/html/SerializationGuide.htm
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this
+                , new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    //Formatting = Formatting.Indented
+                });
         }
     }
 }

@@ -6,10 +6,10 @@ namespace JsonComparer.Models
     {
         public CompareJsonObjects()
         {
-            JsonA = new Dictionary<PrimaryKeyDto, ValueDto>();
-            JsonB = new Dictionary<PrimaryKeyDto, ValueDto>();
+            JsonA = new Dictionary<JsonPkDto, JsonValueDto>();
+            JsonB = new Dictionary<JsonPkDto, JsonValueDto>();
         }
-        public Dictionary<PrimaryKeyDto, ValueDto> JsonA { get; set; }
-        public Dictionary<PrimaryKeyDto, ValueDto> JsonB { get; set; }
+        public Dictionary<JsonPkDto, JsonValueDto> JsonA { get; set; }
+        public Dictionary<JsonPkDto, JsonValueDto> JsonB { get; set; }
     }
 }

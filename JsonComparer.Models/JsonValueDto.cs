@@ -2,7 +2,7 @@
 
 namespace JsonComparer.Models
 {
-    public class ValueDto : IEquatable<ValueDto>
+    public class JsonValueDto : IEquatable<JsonValueDto>
     {
         public string TotalDebitAmount { get; set; }
         public string TotalExportGrossAmount { get; set; }
@@ -186,9 +186,9 @@ namespace JsonComparer.Models
         public string TransactionHistoryID { get; set; }
 
         //If values are same returns null, if are different take other value
-        public ValueDto Merge(ValueDto other)
+        public JsonValueDto Merge(JsonValueDto other)
         {
-            var mVals = new ValueDto
+            var mVals = new JsonValueDto
             {
                 TotalDebitAmount = (TotalDebitAmount != other.TotalDebitAmount && other.TotalDebitAmount != null ? other.TotalDebitAmount : null),
                 TotalExportGrossAmount = (TotalExportGrossAmount != other.TotalExportGrossAmount && other.TotalExportGrossAmount != null ? other.TotalExportGrossAmount : null),
@@ -561,7 +561,7 @@ namespace JsonComparer.Models
         }
 
 
-        public bool Equals(ValueDto other)
+        public bool Equals(JsonValueDto other)
         {
             return (TotalDebitAmount == other.TotalDebitAmount
                 && TotalExportGrossAmount == other.TotalExportGrossAmount
